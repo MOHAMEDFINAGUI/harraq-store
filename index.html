@@ -585,6 +585,74 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   box-shadow:0 0 0 1px rgba(34,211,238,.18),0 0 12px rgba(34,211,238,.07);
 }
 
+/* Color picker */
+.color-grid{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:18px}
+.clr-chk{display:none}
+.clr-lbl{
+  width:32px;height:32px;border-radius:50%;cursor:pointer;
+  display:block;border:2.5px solid rgba(255,255,255,.12);
+  transition:transform .18s,box-shadow .18s,border-color .18s;
+  position:relative;
+}
+.clr-lbl:hover{transform:scale(1.15);border-color:rgba(255,255,255,.4)}
+.clr-chk:checked + .clr-lbl{
+  transform:scale(1.18);
+  border-color:#fff;
+  box-shadow:0 0 0 3px rgba(34,211,238,.4),0 4px 14px rgba(0,0,0,.5);
+}
+.clr-chk:checked + .clr-lbl::after{
+  content:'✓';
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.65rem;font-weight:900;color:#fff;
+  text-shadow:0 1px 3px rgba(0,0,0,.8);
+}
+
+/* Admin row buttons */
+.arow-btns{display:flex;gap:6px;flex-shrink:0}
+.ebtn{
+  background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.22);
+  color:#60a5fa;padding:8px 13px;border-radius:8px;
+  font-size:.78rem;font-weight:800;cursor:pointer;
+  transition:all .2s;white-space:nowrap;
+}
+.ebtn:hover{background:rgba(59,130,246,.18);border-color:rgba(59,130,246,.4)}
+
+/* Color picker (admin) */
+.color-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.clr-chk{display:none}
+.clr-lbl{
+  width:36px;height:36px;border-radius:50%;cursor:pointer;
+  border:2.5px solid transparent;
+  transition:transform .18s,box-shadow .18s,border-color .18s;
+  position:relative;
+}
+.clr-lbl:hover{transform:scale(1.12)}
+.clr-chk:checked + .clr-lbl{
+  border-color:#fff;
+  box-shadow:0 0 0 2px rgba(255,255,255,.25),0 0 16px rgba(255,255,255,.15);
+  transform:scale(1.1);
+}
+.clr-lbl::after{
+  content:'✓';
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;font-weight:900;color:#fff;
+  opacity:0;transition:opacity .18s;
+  text-shadow:0 1px 3px rgba(0,0,0,.5);
+}
+.clr-chk:checked + .clr-lbl::after{opacity:1}
+
+/* Edit button */
+.ebtn{
+  background:rgba(34,211,238,.07);border:1px solid rgba(34,211,238,.2);
+  color:var(--c1);padding:8px 14px;border-radius:8px;
+  font-size:.78rem;font-weight:800;cursor:pointer;
+  transition:all .2s;white-space:nowrap;flex-shrink:0;
+}
+.ebtn:hover{background:rgba(34,211,238,.15);border-color:rgba(34,211,238,.38)}
+.arow-btns{display:flex;gap:6px;flex-shrink:0}
+
 /* Toast */
 #toast{
   position:fixed;bottom:24px;left:50%;
@@ -691,6 +759,8 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
       <input type="number" id="pPrice" class="inp" placeholder="450">
       <label class="lbl" style="margin-bottom:9px">المقاسات المتوفرة</label>
       <div class="size-grid" id="sizeGrid"></div>
+      <label class="lbl" style="margin-bottom:10px">الألوان المتوفرة</label>
+      <div class="color-grid" id="colorGrid"></div>
       <label class="lbl" style="margin-bottom:9px">صورة الحذاء</label>
       <div class="prev-wrap" id="prevWrap">
         <img id="prevImg" src="" alt="">
@@ -719,7 +789,74 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 
 <div id="toast"></div>
 
+<!-- EDIT MODAL -->
+<div class="ovl" id="editOvl">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="shead">
+      <div class="stitle"><div class="sico">✏️</div>تعديل الحذاء</div>
+      <button class="sclose" onclick="closeModal('editOvl')">×</button>
+    </div>
+    <div class="sbody">
+      <label class="lbl">اسم الحذاء</label>
+      <input type="text" id="eName" class="inp" placeholder="اسم الحذاء">
+      <label class="lbl">السعر — درهم</label>
+      <input type="number" id="ePrice" class="inp" placeholder="450">
+      <label class="lbl" style="margin-bottom:9px">المقاسات المتوفرة</label>
+      <div class="size-grid" id="eSizeGrid"></div>
+      <label class="lbl" style="margin-bottom:10px">الألوان المتوفرة</label>
+      <div class="color-grid" id="eColorGrid"></div>
+      <button class="btn-neon" onclick="saveEdit()">
+        حفظ التعديلات
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path d="M5 13l4 4L19 7"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
+/* ── Colors list ── */
+const COLORS = [
+  {id:'white',  label:'أبيض',   hex:'#ffffff'},
+  {id:'black',  label:'أسود',   hex:'#1a1a1a'},
+  {id:'gray',   label:'رمادي',  hex:'#6b7280'},
+  {id:'silver', label:'فضي',    hex:'#c0c0c0'},
+  {id:'red',    label:'أحمر',   hex:'#ef4444'},
+  {id:'pink',   label:'وردي',   hex:'#ec4899'},
+  {id:'orange', label:'برتقالي',hex:'#f97316'},
+  {id:'yellow', label:'أصفر',   hex:'#eab308'},
+  {id:'green',  label:'أخضر',   hex:'#22c55e'},
+  {id:'teal',   label:'زيتي',   hex:'#14b8a6'},
+  {id:'cyan',   label:'سماوي',  hex:'#06b6d4'},
+  {id:'blue',   label:'أزرق',   hex:'#3b82f6'},
+  {id:'navy',   label:'كحلي',   hex:'#1e3a5f'},
+  {id:'purple', label:'بنفسجي', hex:'#a855f7'},
+  {id:'brown',  label:'بني',    hex:'#92400e'},
+  {id:'beige',  label:'بيج',    hex:'#d4b483'},
+  {id:'gold',   label:'ذهبي',   hex:'#d97706'},
+  {id:'multi',  label:'متعدد',  hex:'linear-gradient(135deg,#ef4444,#22c55e,#3b82f6)'},
+];
+
+function buildColorGrid(containerId, prefix, selectedIds=[]) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = COLORS.map(c => {
+    const bg = c.hex.startsWith('linear') ? c.hex : c.hex;
+    const style = c.hex.startsWith('linear') ? `background:${c.hex}` : `background:${c.hex}`;
+    const checked = selectedIds.includes(c.id) ? 'checked' : '';
+    return `<input type="checkbox" class="clr-chk" id="${prefix}${c.id}" value="${c.id}" ${checked}>
+            <label class="clr-lbl" for="${prefix}${c.id}" style="${style}" title="${c.label}"></label>`;
+  }).join('');
+}
+
+function getSelectedColors(prefix) {
+  return COLORS.map(c => c.id).filter(id => {
+    const el = document.getElementById(prefix + id);
+    return el && el.checked;
+  });
+}
+
 /* ── Build size checkboxes 1→50 ── */
 (function(){
   const grid = document.getElementById('sizeGrid');
@@ -728,12 +865,15 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
     h += `<input type="checkbox" class="size-chk" id="asz${s}" value="${s}"><label class="size-chk-lbl" for="asz${s}">${s}</label>`;
   }
   grid.innerHTML = h;
+  buildColorGrid('colorGrid', 'clr_');
 })();
 
 /* ── Free GPU memory after card animations finish ── */
 function releaseWillChange(){
   document.querySelectorAll('.card').forEach(c => c.style.willChange = 'auto');
 }
+
+let editIdx = -1;
 
 const IMGBB   = '024446bf2125104ed78757e1ce535609';
 const WANUM   = '212670775976';
@@ -813,6 +953,7 @@ function renderGrid() {
         <div class="card-body">
           <div class="card-name">${p.nm}</div>
           <div class="price-row"><span class="price">${p.pr}</span><span class="cur">درهم</span></div>
+          ${(p.colors && p.colors.length) ? `<div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:2px">${p.colors.map(id=>{const c=COLORS.find(x=>x.id===id);return c?`<span title="${c.label}" style="width:14px;height:14px;border-radius:50%;background:${c.hex};border:1.5px solid rgba(255,255,255,.18);display:inline-block;flex-shrink:0"></span>`:''}).join('')}</div>` : ''}
           <div class="size-lbl">المقاس</div>
           <select class="card-sel" id="sz${i}">${opts}</select>
           <button class="wa-btn" onclick="orderWA(${i})">
@@ -866,19 +1007,72 @@ function renderAdminList() {
     list.innerHTML = `<div class="aempty">لم يتم إضافة أي حذاء بعد</div>`;
     return;
   }
-  list.innerHTML = products.map((p,i) => `
+  list.innerHTML = products.map((p,i) => {
+    const colorDots = (p.colors && p.colors.length)
+      ? p.colors.map(id => {
+          const c = COLORS.find(x => x.id === id);
+          if (!c) return '';
+          const bg = c.hex.startsWith('linear') ? c.hex : c.hex;
+          return `<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${bg};border:1px solid rgba(255,255,255,.2);flex-shrink:0"></span>`;
+        }).join('')
+      : '';
+    return `
     <div class="arow">
       <img src="${p.img}" alt="${p.nm}" loading="lazy">
       <div class="arow-info">
         <div class="arow-name">${p.nm}</div>
         <div class="arow-price">السعر: ${p.pr} درهم</div>
+        ${colorDots ? `<div style="display:flex;gap:4px;margin-top:5px;flex-wrap:wrap">${colorDots}</div>` : ''}
       </div>
-      <button class="dbtn" onclick="delProd(${i})">حذف</button>
-    </div>`).join('');
+      <div class="arow-btns">
+        <button class="ebtn" onclick="openEdit(${i})">تعديل</button>
+        <button class="dbtn" onclick="delProd(${i})">حذف</button>
+      </div>
+    </div>`;
+  }).join('');
 }
+
 function delProd(i) {
   products.splice(i,1); save(); renderAdminList(); renderGrid();
   showToast('تم حذف الحذاء بنجاح');
+}
+
+/* ── Edit product ── */
+function openEdit(i) {
+  editIdx = i;
+  const p = products[i];
+  document.getElementById('eName').value  = p.nm;
+  document.getElementById('ePrice').value = p.pr;
+
+  // Build size grid for edit modal
+  const esg = document.getElementById('eSizeGrid');
+  let sh = '';
+  for(let s = 1; s <= 50; s++){
+    const chk = (p.sizes && p.sizes.includes(s)) ? 'checked' : '';
+    sh += `<input type="checkbox" class="size-chk" id="esz${s}" value="${s}" ${chk}><label class="size-chk-lbl" for="esz${s}">${s}</label>`;
+  }
+  esg.innerHTML = sh;
+
+  // Build color grid for edit modal
+  buildColorGrid('eColorGrid', 'eclr_', p.colors || []);
+
+  document.getElementById('editOvl').classList.add('on');
+}
+
+function saveEdit() {
+  if (editIdx < 0) return;
+  const nm  = document.getElementById('eName').value.trim();
+  const pr  = document.getElementById('ePrice').value.trim();
+  const sizes  = Array.from({length:50},(_,i)=>i+1).filter(s => document.getElementById('esz'+s).checked);
+  const colors = getSelectedColors('eclr_');
+  if (!nm)           { showToast('يرجى إدخال اسم الحذاء', 'warn'); return; }
+  if (!pr)           { showToast('يرجى إدخال السعر', 'warn'); return; }
+  if (!sizes.length) { showToast('يرجى اختيار مقاس واحد على الأقل', 'warn'); return; }
+  products[editIdx] = { ...products[editIdx], nm, pr, sizes, colors };
+  save(); renderAdminList(); renderGrid();
+  closeModal('editOvl');
+  showToast('تم تعديل الحذاء بنجاح ✏️');
+  editIdx = -1;
 }
 
 /* ── File ── */
@@ -907,6 +1101,7 @@ async function addProduct() {
   const nm = document.getElementById('pName').value.trim();
   const pr = document.getElementById('pPrice').value.trim();
   const sizes = Array.from({length:50},(_,i)=>i+1).filter(s => document.getElementById('asz'+s).checked);
+  const colors = getSelectedColors('clr_');
   if (!nm)           { showToast('يرجى إدخال اسم الحذاء', 'warn'); return; }
   if (!pr)           { showToast('يرجى إدخال السعر', 'warn'); return; }
   if (!sizes.length) { showToast('يرجى اختيار المقاسات المتوفرة', 'warn'); return; }
@@ -925,11 +1120,12 @@ async function addProduct() {
     const res  = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB}`, { method:'POST', body:fd });
     const data = await res.json();
     if (!data.success) throw new Error();
-    products.push({ nm, pr, img: data.data.url, sizes });
+    products.push({ nm, pr, img: data.data.url, sizes, colors });
     save(); renderGrid(); renderAdminList();
     document.getElementById('pName').value  = '';
     document.getElementById('pPrice').value = '';
     Array.from({length:50},(_,i)=>i+1).forEach(s => document.getElementById('asz'+s).checked = false);
+    COLORS.forEach(c => { const el = document.getElementById('clr_'+c.id); if(el) el.checked=false; });
     clearPrev();
     showToast('تم رفع الصورة بنجاح، الحذاء متاح الآن في المتجر! 🎉');
   } catch {
