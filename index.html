@@ -295,7 +295,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 }
 .card:hover::before{opacity:1}
 
-/* Card image */
+/* Card image — supports slider */
 .card-fig{
   position:relative;
   aspect-ratio:1/1;overflow:hidden;
@@ -308,12 +308,45 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 }
 .card:hover .card-fig img{transform:scale(1.08) translateZ(0)}
 
+/* Image slider */
+.img-slider{position:relative;aspect-ratio:1/1;overflow:hidden;background:linear-gradient(135deg,var(--bg4),var(--bg3))}
+.img-slider-track{
+  display:flex;width:100%;height:100%;
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+  will-change:transform;
+}
+.img-slider-track img{
+  width:100%;height:100%;object-fit:cover;flex-shrink:0;
+  display:block;
+}
+.slider-btn{
+  position:absolute;top:50%;transform:translateY(-50%);
+  background:rgba(4,4,10,.65);border:1px solid rgba(255,255,255,.12);
+  color:#fff;width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;z-index:3;font-size:.75rem;
+  transition:background .2s;
+  -webkit-tap-highlight-color:transparent;
+}
+.slider-btn:hover{background:rgba(34,211,238,.25)}
+.slider-btn.prev{right:8px}
+.slider-btn.next{left:8px}
+.slider-dots{
+  position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
+  display:flex;gap:4px;z-index:3;
+}
+.slider-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:rgba(255,255,255,.35);transition:all .2s;
+}
+.slider-dot.on{background:#fff;width:12px;border-radius:3px}
+
 /* Overlay gradient on image bottom */
-.card-fig::after{
+.card-fig::after,.img-slider::after{
   content:'';
   position:absolute;bottom:0;left:0;right:0;height:40%;
   background:linear-gradient(to top,rgba(4,4,10,.7),transparent);
-  pointer-events:none;
+  pointer-events:none;z-index:1;
 }
 
 .card-badge{
@@ -324,6 +357,34 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   border-radius:100px;text-transform:uppercase;
   box-shadow:0 2px 12px rgba(34,211,238,.35);
 }
+
+/* Multi-image preview in admin */
+.multi-prev{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.mprev-item{
+  position:relative;width:72px;height:72px;border-radius:var(--r3);
+  overflow:hidden;border:1.5px solid rgba(34,211,238,.15);
+  flex-shrink:0;
+}
+.mprev-item img{width:100%;height:100%;object-fit:cover;display:block}
+.mprev-rm{
+  position:absolute;top:3px;left:3px;
+  background:rgba(0,0,0,.75);border:none;
+  color:#fff;border-radius:50%;width:20px;height:20px;
+  font-size:.65rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s;
+}
+.mprev-rm:hover{background:rgba(200,40,40,.8)}
+.mprev-add{
+  width:72px;height:72px;border-radius:var(--r3);
+  border:1.5px dashed rgba(34,211,238,.22);
+  background:var(--bg4);color:var(--muted);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;font-size:.65rem;font-weight:700;cursor:pointer;
+  transition:all .2s;flex-shrink:0;
+}
+.mprev-add:hover{border-color:var(--c1);color:var(--c1);background:rgba(34,211,238,.04)}
+.mprev-add-ico{font-size:1.3rem}
 
 /* Card body */
 .card-body{
@@ -354,23 +415,42 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   letter-spacing:2px;text-transform:uppercase;font-weight:700;
 }
 
-.card-sel{
-  width:100%;
-  background:var(--bg4);
-  border:1px solid rgba(34,211,238,.12);
-  color:var(--text);
-  padding:10px 14px 10px 32px;
-  border-radius:var(--r3);
-  font-size:.85rem;font-weight:600;cursor:pointer;
-  appearance:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%2322d3ee' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:left 10px center;
-  transition:border-color .2s,box-shadow .2s;
-  outline:none;
+/* Customer size buttons (replaces select) */
+.cust-sizes{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:2px}
+.csz-btn{
+  min-width:34px;height:32px;padding:0 7px;
+  border-radius:6px;border:1.5px solid var(--border);
+  background:var(--bg4);color:var(--muted);
+  font-size:.78rem;font-weight:700;cursor:pointer;
+  transition:all .17s;user-select:none;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Tajawal',sans-serif;
 }
-.card-sel:focus{
-  border-color:var(--c1);
-  box-shadow:0 0 0 2px rgba(34,211,238,.1);
+.csz-btn:hover{border-color:rgba(34,211,238,.35);color:var(--text)}
+.csz-btn.active{
+  border-color:var(--c1);color:var(--c1);
+  background:rgba(34,211,238,.1);
+  box-shadow:0 0 0 1px rgba(34,211,238,.2);
+}
+
+/* Customer color dots (interactive) */
+.cust-color-lbl{
+  font-size:.64rem;color:var(--muted);
+  letter-spacing:2px;text-transform:uppercase;font-weight:700;
+  margin-top:2px;
+}
+.cust-colors{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.cclr-btn{
+  width:24px;height:24px;border-radius:50%;cursor:pointer;
+  border:2px solid rgba(255,255,255,.1);
+  transition:transform .17s,box-shadow .17s,border-color .17s;
+  flex-shrink:0;
+}
+.cclr-btn:hover{transform:scale(1.2);border-color:rgba(255,255,255,.35)}
+.cclr-btn.active{
+  transform:scale(1.22);
+  border-color:#fff;
+  box-shadow:0 0 0 2.5px rgba(34,211,238,.5),0 3px 10px rgba(0,0,0,.5);
 }
 
 /* WA button */
@@ -761,12 +841,14 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
       <div class="size-grid" id="sizeGrid"></div>
       <label class="lbl" style="margin-bottom:10px">الألوان المتوفرة</label>
       <div class="color-grid" id="colorGrid"></div>
-      <label class="lbl" style="margin-bottom:9px">صورة الحذاء</label>
-      <div class="prev-wrap" id="prevWrap">
-        <img id="prevImg" src="" alt="">
-        <button class="prev-rm" onclick="clearPrev()">✕</button>
+      <label class="lbl" style="margin-bottom:9px">صور الحذاء (يمكن إضافة أكثر من صورة)</label>
+      <div class="multi-prev" id="multiPrev">
+        <button type="button" class="mprev-add" onclick="triggerAddImg()">
+          <span class="mprev-add-ico">➕</span>
+          <span>إضافة</span>
+        </button>
       </div>
-      <div class="fgrid" id="fgrid">
+      <div class="fgrid" id="fgrid" style="display:none">
         <button type="button" class="fpick" onclick="document.getElementById('inpGal').click()">
           <span class="ficon">🖼️</span><span>اختر من المعرض</span>
         </button>
@@ -883,7 +965,6 @@ const SKEY    = 'harraq_v4';
 /* ── State — safe localStorage with fallback ── */
 let products = [];
 try { products = JSON.parse(localStorage.getItem(SKEY) || '[]'); } catch(e) { products = []; }
-let picked = null;
 
 function save() {
   try { localStorage.setItem(SKEY, JSON.stringify(products)); } catch(e) {}
@@ -942,20 +1023,51 @@ function renderGrid() {
     const opts = [39,40,41,42,43,44,45].map(s => `<option value="${s}">${s}</option>`).join('');
     let html = '';
     products.forEach((p, i) => {
-      const sizes = (p.sizes && p.sizes.length) ? p.sizes : [39,40,41,42,43,44,45];
-      const opts = sizes.map(s => `<option value="${s}">${s}</option>`).join('');
+      const sizes  = (p.sizes && p.sizes.length) ? p.sizes : [39,40,41,42,43,44,45];
+      const colors = (p.colors && p.colors.length) ? p.colors : [];
+      const imgs   = (p.imgs && p.imgs.length) ? p.imgs : [p.img];
+
+      const szBtns = sizes.map((s,si) =>
+        `<button class="csz-btn${si===0?' active':''}" onclick="pickSz(this,${i})" data-sz="${s}">${s}</button>`
+      ).join('');
+
+      const clrBtns = colors.map((id,ci) => {
+        const c = COLORS.find(x => x.id === id);
+        if (!c) return '';
+        const bg = c.hex.startsWith('linear') ? c.hex : c.hex;
+        return `<button class="cclr-btn${ci===0?' active':''}" onclick="pickClr(this,${i})" data-clr="${c.id}" data-label="${c.label}" style="background:${bg}" title="${c.label}"></button>`;
+      }).join('');
+
+      // Build image figure — slider if >1 image, single if 1
+      let figHtml;
+      if (imgs.length > 1) {
+        const slides = imgs.map(url => `<img src="${url}" loading="lazy" decoding="async" alt="${p.nm}">`).join('');
+        const dots   = imgs.map((_,di) => `<div class="slider-dot${di===0?' on':''}" data-di="${di}"></div>`).join('');
+        figHtml = `
+          <div class="img-slider" id="sl${i}">
+            <div class="img-slider-track" id="slt${i}">${slides}</div>
+            <button class="slider-btn next" onclick="slideCard(${i},-1)">&#8250;</button>
+            <button class="slider-btn prev" onclick="slideCard(${i},1)">&#8249;</button>
+            <div class="slider-dots" id="sld${i}">${dots}</div>
+            <div class="card-badge">NEW</div>
+          </div>`;
+      } else {
+        figHtml = `
+          <div class="card-fig">
+            <img src="${imgs[0]}" alt="${p.nm}" loading="lazy" decoding="async">
+            <div class="card-badge">NEW</div>
+          </div>`;
+      }
+
       html += `
       <div class="card" style="animation:fadeUp .4s ${(i*.055).toFixed(2)}s both">
-        <div class="card-fig">
-          <img src="${p.img}" alt="${p.nm}" loading="lazy" decoding="async">
-          <div class="card-badge">NEW</div>
-        </div>
+        ${figHtml}
         <div class="card-body">
           <div class="card-name">${p.nm}</div>
           <div class="price-row"><span class="price">${p.pr}</span><span class="cur">درهم</span></div>
-          ${(p.colors && p.colors.length) ? `<div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:2px">${p.colors.map(id=>{const c=COLORS.find(x=>x.id===id);return c?`<span title="${c.label}" style="width:14px;height:14px;border-radius:50%;background:${c.hex};border:1.5px solid rgba(255,255,255,.18);display:inline-block;flex-shrink:0"></span>`:''}).join('')}</div>` : ''}
           <div class="size-lbl">المقاس</div>
-          <select class="card-sel" id="sz${i}">${opts}</select>
+          <div class="cust-sizes" id="szw${i}">${szBtns}</div>
+          ${clrBtns ? `<div class="cust-color-lbl">اللون</div><div class="cust-colors" id="clrw${i}">${clrBtns}</div>` : ''}
           <button class="wa-btn" onclick="orderWA(${i})">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="white">
               <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
@@ -971,11 +1083,44 @@ function renderGrid() {
   });
 }
 
+/* ── Image slider ── */
+const sliderState = {};
+function slideCard(i, dir) {
+  const p    = products[i];
+  const imgs = (p.imgs && p.imgs.length) ? p.imgs : [p.img];
+  if (imgs.length < 2) return;
+  if (!sliderState[i]) sliderState[i] = 0;
+  sliderState[i] = (sliderState[i] + dir + imgs.length) % imgs.length;
+  const idx  = sliderState[i];
+  const track = document.getElementById('slt'+i);
+  if (track) track.style.transform = `translateX(${idx * 100}%)`;
+  document.querySelectorAll(`#sld${i} .slider-dot`).forEach((d,di) => {
+    d.classList.toggle('on', di === idx);
+  });
+}
+
+/* ── Size / Color picker helpers ── */
+function pickSz(btn, i) {
+  document.querySelectorAll(`#szw${i} .csz-btn`).forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function pickClr(btn, i) {
+  document.querySelectorAll(`#clrw${i} .cclr-btn`).forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
 /* ── WhatsApp ── */
 function orderWA(i) {
-  const p = products[i];
-  const sz = document.getElementById('sz'+i).value;
-  const msg = encodeURIComponent(`السلام عليكم Harraq Store، أعجبني هذا الحذاء ${p.nm} بمقاس ${sz}، وأرغب في طلبه.`);
+  const p      = products[i];
+  const szEl   = document.querySelector(`#szw${i} .csz-btn.active`);
+  const clrEl  = document.querySelector(`#clrw${i} .cclr-btn.active`);
+  if (!szEl) { showToast('يرجى اختيار المقاس أولاً', 'warn'); return; }
+  const sz     = szEl.dataset.sz;
+  const clr    = clrEl ? ` — اللون: ${clrEl.dataset.label}` : '';
+  const imgUrl = p.img ? `\n🖼️ صورة المنتج: ${p.img}` : '';
+  const msg    = encodeURIComponent(
+    `السلام عليكم Harraq Store،\nأعجبني هذا الحذاء: *${p.nm}*\nالمقاس: ${sz}${clr}\nالسعر: ${p.pr} درهم${imgUrl}\nوأرغب في طلبه.`
+  );
   window.open(`https://wa.me/${WANUM}?text=${msg}`, '_blank');
 }
 
@@ -1075,59 +1220,91 @@ function saveEdit() {
   editIdx = -1;
 }
 
-/* ── File ── */
+/* ── Multi-image state ── */
+let pickedFiles  = []; // File objects waiting to upload
+let pickedPreviews = []; // base64 previews for display
+
+function triggerAddImg() {
+  // show pick options inline briefly — reuse fgrid
+  const fg = document.getElementById('fgrid');
+  fg.style.display = fg.style.display === 'grid' ? 'none' : 'grid';
+}
+
 function onFile(inp) {
   if (!inp.files || !inp.files[0]) return;
-  picked = inp.files[0];
+  const file = inp.files[0];
+  inp.value = '';
+  document.getElementById('fgrid').style.display = 'none';
   const r = new FileReader();
   r.onload = e => {
-    document.getElementById('prevImg').src = e.target.result;
-    document.getElementById('prevWrap').style.display = 'block';
-    document.getElementById('fgrid').style.display    = 'none';
+    pickedFiles.push(file);
+    pickedPreviews.push(e.target.result);
+    renderMultiPrev();
   };
-  r.readAsDataURL(picked);
+  r.readAsDataURL(file);
 }
-function clearPrev() {
-  picked = null;
-  document.getElementById('prevImg').src = '';
-  document.getElementById('prevWrap').style.display = 'none';
-  document.getElementById('fgrid').style.display    = 'grid';
-  document.getElementById('inpGal').value = '';
-  document.getElementById('inpCam').value = '';
+
+function renderMultiPrev() {
+  const wrap = document.getElementById('multiPrev');
+  let h = pickedPreviews.map((src, i) => `
+    <div class="mprev-item">
+      <img src="${src}" alt="">
+      <button class="mprev-rm" onclick="removeImg(${i})">✕</button>
+    </div>`).join('');
+  h += `<button type="button" class="mprev-add" onclick="triggerAddImg()">
+    <span class="mprev-add-ico">➕</span><span>إضافة</span>
+  </button>`;
+  wrap.innerHTML = h;
+}
+
+function removeImg(i) {
+  pickedFiles.splice(i, 1);
+  pickedPreviews.splice(i, 1);
+  renderMultiPrev();
+}
+
+function clearMultiPrev() {
+  pickedFiles = [];
+  pickedPreviews = [];
+  renderMultiPrev();
 }
 
 /* ── Add product ── */
 async function addProduct() {
-  const nm = document.getElementById('pName').value.trim();
-  const pr = document.getElementById('pPrice').value.trim();
-  const sizes = Array.from({length:50},(_,i)=>i+1).filter(s => document.getElementById('asz'+s).checked);
+  const nm     = document.getElementById('pName').value.trim();
+  const pr     = document.getElementById('pPrice').value.trim();
+  const sizes  = Array.from({length:50},(_,i)=>i+1).filter(s => document.getElementById('asz'+s).checked);
   const colors = getSelectedColors('clr_');
-  if (!nm)           { showToast('يرجى إدخال اسم الحذاء', 'warn'); return; }
-  if (!pr)           { showToast('يرجى إدخال السعر', 'warn'); return; }
-  if (!sizes.length) { showToast('يرجى اختيار المقاسات المتوفرة', 'warn'); return; }
-  if (!picked)       { showToast('يرجى إضافة صورة الحذاء', 'warn'); return; }
+  if (!nm)                { showToast('يرجى إدخال اسم الحذاء', 'warn'); return; }
+  if (!pr)                { showToast('يرجى إدخال السعر', 'warn'); return; }
+  if (!sizes.length)      { showToast('يرجى اختيار المقاسات المتوفرة', 'warn'); return; }
+  if (!pickedFiles.length){ showToast('يرجى إضافة صورة واحدة على الأقل', 'warn'); return; }
 
   const sp  = document.getElementById('spin');
   const btn = document.getElementById('addBtn');
   const txt = document.getElementById('addTxt');
-  sp.style.display  = 'block';
-  txt.textContent   = 'جارٍ رفع الصورة...';
-  btn.disabled      = true;
+  sp.style.display = 'block';
+  btn.disabled     = true;
 
   try {
-    const fd = new FormData();
-    fd.append('image', picked);
-    const res  = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB}`, { method:'POST', body:fd });
-    const data = await res.json();
-    if (!data.success) throw new Error();
-    products.push({ nm, pr, img: data.data.url, sizes, colors });
+    const imgUrls = [];
+    for (let idx = 0; idx < pickedFiles.length; idx++) {
+      txt.textContent = `جارٍ رفع الصورة ${idx+1} من ${pickedFiles.length}...`;
+      const fd = new FormData();
+      fd.append('image', pickedFiles[idx]);
+      const res  = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB}`, { method:'POST', body:fd });
+      const data = await res.json();
+      if (!data.success) throw new Error();
+      imgUrls.push(data.data.url);
+    }
+    products.push({ nm, pr, img: imgUrls[0], imgs: imgUrls, sizes, colors });
     save(); renderGrid(); renderAdminList();
     document.getElementById('pName').value  = '';
     document.getElementById('pPrice').value = '';
     Array.from({length:50},(_,i)=>i+1).forEach(s => document.getElementById('asz'+s).checked = false);
     COLORS.forEach(c => { const el = document.getElementById('clr_'+c.id); if(el) el.checked=false; });
-    clearPrev();
-    showToast('تم رفع الصورة بنجاح، الحذاء متاح الآن في المتجر! 🎉');
+    clearMultiPrev();
+    showToast('تم النشر بنجاح، الحذاء متاح الآن في المتجر! 🎉');
   } catch {
     showToast('حدث خطأ أثناء الرفع، يرجى المحاولة مجدداً', 'err');
   } finally {
