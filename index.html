@@ -3,6 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#04040a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Harraq Store">
+<meta name="application-name" content="Harraq Store">
+<meta name="description" content="أحذية بجودة عالية — اختر مقاسك واطلب عبر واتساب">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%2304040a'/><text x='256' y='300' text-anchor='middle' font-family='Arial Black' font-weight='900' font-size='260' fill='%2322d3ee'>H</text></svg>">
+<link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Harraq%20Store%22,%22short_name%22:%22Harraq%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%2304040a%22,%22theme_color%22:%22%2304040a%22,%22orientation%22:%22portrait-primary%22,%22icons%22:[{%22src%22:%22data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%2304040a'/><text x='256' y='300' text-anchor='middle' font-family='Arial Black' font-weight='900' font-size='260' fill='%2322d3ee'>H</text></svg>%22,%22sizes%22:%22512x512%22,%22type%22:%22image/svg+xml%22}]}">
+<meta name="theme-color" content="#04040a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Harraq Store">
+<meta name="application-name" content="Harraq Store">
+<meta name="description" content="أحذية بجودة عالية — Harraq Store">
+<meta name="msapplication-TileColor" content="#04040a">
+<meta name="msapplication-tap-highlight" content="no">
+
+<!-- PWA Manifest inline via link -->
+<link rel="manifest" href="data:application/json;charset=utf-8,%7B%22name%22%3A%22Harraq%20Store%22%2C%22short_name%22%3A%22Harraq%22%2C%22description%22%3A%22%D8%A3%D8%AD%D8%B0%D9%8A%D8%A9%20%D8%A8%D8%AC%D9%88%D8%AF%D8%A9%20%D8%B9%D8%A7%D9%84%D9%8A%D8%A9%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%2304040a%22%2C%22theme_color%22%3A%22%2304040a%22%2C%22orientation%22%3A%22portrait%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%2520xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%2520viewBox%3D'0%2520 0%2520512%2520512'%253E%253Crect%2520width%3D'512'%2520height%3D'512'%2520rx%3D'80'%2520fill%3D'%2304040a'%2F%253E%253C%2Fsvg%253E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D">
+
+<!-- Apple touch icon (SVG inline as data URI) -->
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='80' fill='%2304040a'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial Black,sans-serif' font-weight='900' font-size='220' fill='url(%23g)' letter-spacing='-8'>H</text><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%2322d3ee'/><stop offset='1' stop-color='%233b82f6'/></linearGradient></defs></svg>">
+
 <title>Harraq Store</title>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
@@ -71,6 +96,18 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   background-image:
     repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(34,211,238,.006) 2px,rgba(34,211,238,.006) 4px),
     repeating-linear-gradient(90deg,transparent,transparent 80px,rgba(34,211,238,.018) 80px,rgba(34,211,238,.018) 81px);
+}
+@media(min-width:900px){
+  #intro{
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 50%, rgba(34,211,238,.04) 0%,transparent 60%),
+      radial-gradient(ellipse 50% 60% at 80% 30%, rgba(99,102,241,.04) 0%,transparent 55%),
+      var(--bg);
+    background-image:
+      repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(34,211,238,.006) 2px,rgba(34,211,238,.006) 4px),
+      repeating-linear-gradient(90deg,transparent,transparent 80px,rgba(34,211,238,.018) 80px,rgba(34,211,238,.018) 81px);
+  }
+  .intro-inner{max-width:430px;width:100%}
 }
 .beams{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 .beam{
@@ -191,6 +228,49 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 ══════════════════════════════════════════ */
 #store{display:none;min-height:100vh}
 
+/* ── Desktop wrapper — centers store like a phone on big screens ── */
+@media(min-width:900px){
+  body{
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 50%, rgba(34,211,238,.04) 0%,transparent 60%),
+      radial-gradient(ellipse 50% 60% at 80% 30%, rgba(99,102,241,.04) 0%,transparent 55%),
+      var(--bg);
+  }
+  #store{
+    max-width:430px;
+    margin:0 auto;
+    min-height:100vh;
+    position:relative;
+    box-shadow:
+      -1px 0 0 rgba(34,211,238,.08),
+      1px 0 0 rgba(34,211,238,.08),
+      0 0 80px rgba(0,0,0,.6),
+      0 0 0 1px rgba(34,211,238,.06);
+  }
+  /* Desktop sidebar info panel */
+  #desktopSidebar{
+    position:fixed;
+    top:50%;left:calc(50% - 215px - 280px);
+    transform:translateY(-50%);
+    width:260px;
+    display:flex;flex-direction:column;gap:24px;
+    pointer-events:none;
+    animation:fadeIn .8s .3s both;
+  }
+  #desktopSidebarR{
+    position:fixed;
+    top:50%;left:calc(50% + 215px + 20px);
+    transform:translateY(-50%);
+    width:220px;
+    display:flex;flex-direction:column;gap:18px;
+    pointer-events:none;
+    animation:fadeIn .8s .5s both;
+  }
+}
+@media(max-width:899px){
+  #desktopSidebar,#desktopSidebarR{display:none!important}
+}
+
 /* ── NAV ── */
 .nav{
   position:sticky;top:0;z-index:30;height:64px;padding:0 22px;
@@ -264,9 +344,8 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   gap:14px;
   contain:layout style;
 }
-@media(min-width:540px){.grid{gap:18px}}
-@media(min-width:768px){.grid{grid-template-columns:repeat(3,1fr);gap:22px}}
-@media(min-width:1100px){.grid{grid-template-columns:repeat(4,1fr);gap:24px}}
+@media(min-width:540px) and (max-width:899px){.grid{gap:18px;grid-template-columns:repeat(3,1fr)}}
+@media(min-width:900px){.grid{grid-template-columns:repeat(2,1fr);gap:14px}}
 
 /* ── CARD ── */
 .card{
@@ -779,6 +858,31 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 
 <!-- STORE -->
 <div id="store">
+
+  <!-- Desktop left sidebar -->
+  <div id="desktopSidebar">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:3.2rem;letter-spacing:6px;line-height:.85;background:linear-gradient(135deg,#fff,rgba(34,211,238,.8));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(34,211,238,.3))">HARRAQ<br>STORE</div>
+    <div style="font-size:.8rem;color:rgba(240,240,250,.35);letter-spacing:2px;text-transform:uppercase;font-family:'Tajawal',sans-serif">متجر الأحذية الفاخرة</div>
+    <div style="width:40px;height:1.5px;background:linear-gradient(90deg,rgba(34,211,238,.6),transparent)"></div>
+    <div style="font-size:.82rem;color:rgba(240,240,250,.38);line-height:1.7;font-family:'Tajawal',sans-serif">اختر مقاسك واطلب<br>مباشرةً عبر واتساب</div>
+    <div style="font-size:.72rem;color:rgba(34,211,238,.35);letter-spacing:1.5px;font-family:'Tajawal',sans-serif">© 2026 Harraq Store</div>
+  </div>
+
+  <!-- Desktop right sidebar -->
+  <div id="desktopSidebarR">
+    <div style="background:linear-gradient(135deg,rgba(15,15,26,.9),rgba(18,18,30,.9));border:1px solid rgba(34,211,238,.1);border-radius:16px;padding:18px;font-family:'Tajawal',sans-serif">
+      <div style="font-size:.64rem;letter-spacing:3px;text-transform:uppercase;color:rgba(34,211,238,.5);margin-bottom:10px">كيفية الطلب</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.2);display:flex;align-items:center;justify-content:center;font-size:.65rem;color:rgba(34,211,238,.7);flex-shrink:0;font-weight:800">1</div><div style="font-size:.8rem;color:rgba(240,240,250,.45);line-height:1.5">اختر الحذاء المناسب</div></div>
+        <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.2);display:flex;align-items:center;justify-content:center;font-size:.65rem;color:rgba(34,211,238,.7);flex-shrink:0;font-weight:800">2</div><div style="font-size:.8rem;color:rgba(240,240,250,.45);line-height:1.5">حدد المقاس واللون</div></div>
+        <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.2);display:flex;align-items:center;justify-content:center;font-size:.65rem;color:rgba(34,211,238,.7);flex-shrink:0;font-weight:800">3</div><div style="font-size:.8rem;color:rgba(240,240,250,.45);line-height:1.5">اضغط اطلب الآن عبر واتساب</div></div>
+      </div>
+    </div>
+    <div style="background:linear-gradient(135deg,rgba(15,15,26,.9),rgba(18,18,30,.9));border:1px solid rgba(34,211,238,.1);border-radius:16px;padding:18px;font-family:'Tajawal',sans-serif">
+      <div style="font-size:.64rem;letter-spacing:3px;text-transform:uppercase;color:rgba(34,211,238,.5);margin-bottom:10px">التوصيل</div>
+      <div style="font-size:.8rem;color:rgba(240,240,250,.4);line-height:1.7">🚚 توصيل لجميع المدن<br>📦 تغليف احترافي<br>✅ ضمان الجودة</div>
+    </div>
+  </div>
   <nav class="nav">
     <div class="nav-logo">HARRAQ</div>
     <div class="nav-chip"><div class="dot"></div><span id="navCnt">0 حذاء</span></div>
@@ -959,7 +1063,7 @@ let editIdx = -1;
 
 const IMGBB   = '024446bf2125104ed78757e1ce535609';
 const WANUM   = '212670775976';
-const PASS    = 'Harraq2026';
+const PASS    = 'Hr@q#2K$9!mZ&vX';
 const SKEY    = 'harraq_v4';
 
 /* ── State — safe localStorage with fallback ── */
@@ -1117,7 +1221,8 @@ function orderWA(i) {
   if (!szEl) { showToast('يرجى اختيار المقاس أولاً', 'warn'); return; }
   const sz     = szEl.dataset.sz;
   const clr    = clrEl ? ` — اللون: ${clrEl.dataset.label}` : '';
-  const msg = encodeURIComponent(`السلام عليكم Harraq Store، أعجبني هذا الحذاء ${p.nm} بمقاس ${sz}${clr}، وأرغب في طلبه.`);
+  const clrLine = clrEl ? `\n🎨 اللون: ${clrEl.dataset.label}` : '';
+  const msg = encodeURIComponent(`🛍️ طلب جديد من Harraq Store\n\n👟 المنتج: ${p.nm}\n📐 المقاس: ${sz}${clrLine}\n💰 السعر: ${p.pr} درهم\n\nالسلام عليكم، أرغب في طلب هذا الحذاء.`);
   window.open(`https://wa.me/${WANUM}?text=${msg}`, '_blank');
 }
 
@@ -1310,6 +1415,72 @@ async function addProduct() {
     btn.disabled     = false;
   }
 }
+
+/* ══════════════════════════════════
+   PWA — Service Worker + Install
+══════════════════════════════════ */
+const swCode = `
+const CACHE='harraq-v1';
+self.addEventListener('install',e=>{self.skipWaiting()});
+self.addEventListener('activate',e=>{self.clients.claim()});
+self.addEventListener('fetch',e=>{
+  e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));
+});
+`;
+if('serviceWorker' in navigator){
+  const blob = new Blob([swCode],{type:'application/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
+}
+
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  setTimeout(showInstallBanner, 2500);
+});
+
+function showInstallBanner(){
+  if(!deferredPrompt || document.getElementById('pwaBanner')) return;
+  const el = document.createElement('div');
+  el.id = 'pwaBanner';
+  el.style.cssText=`
+    position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+    background:linear-gradient(135deg,#0f0f1a,#12121e);
+    border:1px solid rgba(34,211,238,.22);border-radius:16px;
+    padding:14px 18px;display:flex;align-items:center;gap:13px;
+    box-shadow:0 8px 32px rgba(0,0,0,.65),0 0 0 1px rgba(34,211,238,.07);
+    z-index:998;max-width:320px;width:92%;animation:fadeUp .4s both;
+    font-family:'Tajawal',sans-serif;
+  `;
+  el.innerHTML=`
+    <div style="font-size:2rem;flex-shrink:0">📲</div>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:.88rem;font-weight:800;color:#f0f0fa;margin-bottom:3px">ثبّت التطبيق</div>
+      <div style="font-size:.74rem;color:rgba(240,240,250,.42)">يعمل مثل تطبيق حقيقي بدون متصفح</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0">
+      <button onclick="installPWA()" style="background:linear-gradient(135deg,#22d3ee,#3b82f6);border:none;border-radius:8px;color:#04040a;font-size:.8rem;font-weight:800;padding:8px 14px;cursor:pointer;font-family:'Tajawal',sans-serif">تثبيت</button>
+      <button onclick="document.getElementById('pwaBanner').remove()" style="background:transparent;border:1px solid rgba(255,255,255,.1);border-radius:8px;color:rgba(240,240,250,.4);font-size:.72rem;padding:5px 10px;cursor:pointer;font-family:'Tajawal',sans-serif">لاحقاً</button>
+    </div>`;
+  document.body.appendChild(el);
+}
+
+function installPWA(){
+  if(!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(()=>{
+    deferredPrompt=null;
+    const b=document.getElementById('pwaBanner');
+    if(b) b.remove();
+  });
+}
+
+window.addEventListener('appinstalled',()=>{
+  deferredPrompt=null;
+  const b=document.getElementById('pwaBanner');
+  if(b) b.remove();
+  showToast('تم تثبيت التطبيق! 🎉');
+});
 </script>
 </body>
 </html>
