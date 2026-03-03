@@ -1117,10 +1117,7 @@ function orderWA(i) {
   if (!szEl) { showToast('يرجى اختيار المقاس أولاً', 'warn'); return; }
   const sz     = szEl.dataset.sz;
   const clr    = clrEl ? ` — اللون: ${clrEl.dataset.label}` : '';
-  const imgUrl = p.img ? `\n🖼️ صورة المنتج: ${p.img}` : '';
-  const msg    = encodeURIComponent(
-    `السلام عليكم Harraq Store،\nأعجبني هذا الحذاء: *${p.nm}*\nالمقاس: ${sz}${clr}\nالسعر: ${p.pr} درهم${imgUrl}\nوأرغب في طلبه.`
-  );
+  const msg = encodeURIComponent(`السلام عليكم Harraq Store، أعجبني هذا الحذاء ${p.nm} بمقاس ${sz}${clr}، وأرغب في طلبه.`);
   window.open(`https://wa.me/${WANUM}?text=${msg}`, '_blank');
 }
 
